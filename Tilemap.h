@@ -15,8 +15,11 @@ public:
     {
         for (size_t i = 0; i < spec.size(); ++i) {
             for (size_t j = 0; j < spec[0].size(); ++j) {
-                _rects[spec[i][j]] = sf::IntRect(j * tilesize, i * tilesize,
-                                           tilesize, tilesize);
+                Tile current = spec[i][j];
+                if (current != Tile::EMPTY) {
+                    _rects[current] = sf::IntRect(j * tilesize, i * tilesize,
+                                               tilesize, tilesize);
+                }
             }
         }
     }
@@ -65,6 +68,10 @@ public:
 
     Tile& operator[](sf::Vector2u pos) {
         return _map[pos.y][pos.x];
+    }
+
+    void setMap(const std::vector<std::vector<Tile>>& new_map) {
+        _map = new_map;
     }
 
     void draw(sf::RenderTarget &target, sf::RenderStates states) const {
