@@ -14,15 +14,11 @@ public:
         tilesize(tilesize),
         _texture(texture)
     {
-        size_t i, j;
-        i = 0;
-        for (auto row : spec) {
-            j = 0;
-            for (auto tile : row) {
-                _rects[tile] = sf::IntRect(j, i, tilesize, tilesize);
-                j += tilesize;
+        for (size_t i = 0; i < spec.size(); ++i) {
+            for (size_t j = 0; j < spec[0].size(); ++j) {
+                _rects[spec[i][j]] = sf::IntRect(j * tilesize, i * tilesize,
+                                           tilesize, tilesize);
             }
-            i += tilesize;
         }
     }
 
@@ -56,7 +52,7 @@ public:
         _map(theight, std::vector<Tile>(twidth, Tile::EMPTY)),
         _tileset(tileset)
     {
-        
+        // pass
     }
 
     Tile& operator[](sf::Vector2u pos) {
@@ -64,19 +60,15 @@ public:
     }
 
     void draw (sf::RenderTarget &target, sf::RenderStates states) const {
-        size_t i, j;
-        i = 0;
-        for (auto row : _map) {
-            j = 0;
-            for (auto tile : row) {
+        for (size_t i = 0; i < _map.size(); ++i) {
+            for (size_t j = 0; j < _map[0].size(); ++j) {
+                const Tile& tile = _map[i][j];
                 if (tile != Tile::EMPTY) {
                     sf::Sprite sprite = _tileset.getSprite(tile);
-                    sprite.move(j, i);
+                    sprite.move(j * _tileset.tilesize, i * _tileset.tilesize);
                     target.draw(sprite, states);
                 }
-                j += _tileset.tilesize;
             }
-            i += _tileset.tilesize;
         }
     }
 
