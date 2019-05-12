@@ -16,16 +16,19 @@ std::set<sf::Keyboard::Key> ARROW_KEYS = {
 };
 
 
-Tileset<Tile> loadTileset() {
+Tileset<SnakeGame::Tile> loadTileset() {
     sf::Texture texture;
     texture.loadFromFile("tileset.png");
+
+    using T = SnakeGame::Tile;
+
     return {
         std::move(texture), 64,
         {
             //{Tile::RED, Tile::BLUE, Tile::GREEN, Tile::YELLOW},
             //{Tile::BLACK}
-            {Tile::APPLE, Tile::SNAKE, Tile::HEAD, Tile::FIELD},
-            {Tile::NIGHT}
+            {T::APPLE, T::SNAKE, T::HEAD, T::FIELD},
+            {T::NIGHT}
         }
     };
 }
@@ -36,10 +39,11 @@ Tileset<Tile> loadTileset() {
 int main() {
     sf::RenderWindow window(sf::VideoMode(800, 600), __FILE__);
 
-    Environment env(40, 30);
+    SnakeGame::Environment env(40, 30, 3);
+    SnakeGame::State state;
 
     auto tileset = loadTileset();
-    Tilemap<Tile> tilemap(tileset, 0, 0);
+    Tilemap<SnakeGame::Tile> tilemap(tileset, 0, 0);
     tilemap.scale(0.25, 0.25);
 
     while (window.isOpen()) {
@@ -52,23 +56,23 @@ int main() {
                         break;
                     }
                     case sf::Keyboard::Right: {
-                        env.act(Environment::Action::TURN_RIGHT);
+                        env.act(SnakeGame::Action::TURN_RIGHT);
                         break;
                     }
                     case sf::Keyboard::Up: {
-                        env.act(Environment::Action::TURN_UP);
+                        env.act(SnakeGame::Action::TURN_UP);
                         break;
                     }
                     case sf::Keyboard::Left: {
-                        env.act(Environment::Action::TURN_LEFT);
+                        env.act(SnakeGame::Action::TURN_LEFT);
                         break;
                     }
                     case sf::Keyboard::Down: {
-                        env.act(Environment::Action::TURN_DOWN);
+                        env.act(SnakeGame::Action::TURN_DOWN);
                         break;
                     }
                     case sf::Keyboard::Space: {
-                        env.act(Environment::Action::SWAP_HEAD);
+                        env.act(SnakeGame::Action::SWAP_HEAD);
                         break;
                     }
                 }
@@ -78,11 +82,17 @@ int main() {
         }
 
         env.step();
-        tilemap.setMap(env.getState());
+        state = env.getState();
+
+        tilemap.setMap(state.battlefield);
 
         window.clear();
         window.draw(tilemap);
         window.display();
+
+        std::cerr << std::boolalpha <<
+            "Is winner: " << state.is_winner << '\t' <<
+            "Game over: " << state.game_over << std::endl;
 
         sf::sleep(sf::milliseconds(100));
     }
