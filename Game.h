@@ -6,7 +6,7 @@
 template <typename Action>
 using KeyboardMapping = std::map<sf::Keyboard::Key, Action>;
 
-template <typename Action, typename Tile, typename Environment>
+template <typename Environment, typename Action, typename Tile>
 class Game {
 private:
     sf::RenderWindow& window;
@@ -24,9 +24,9 @@ public:
         window(window),
         env(env),
         keyboardMapping(keyboardMapping),
-        tilemap(tileset, 40, 30)
+        tilemap(tileset, env.width, env.height)
     {
-        tilemap.scale(0.25, 0.25);
+        tilemap.scale(0.25, 0.25); // TODO
     }
 
     void processEvent(sf::Event event) {

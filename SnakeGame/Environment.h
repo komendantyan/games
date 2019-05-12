@@ -12,6 +12,10 @@ namespace SnakeGame {
 
 // TODO think about queue of action concept ?
 class Environment {
+public:
+    const size_t width;
+    const size_t height;
+
 private:
     enum class Direction {
         RIGHT,
@@ -23,8 +27,6 @@ private:
 private:
     std::deque<sf::Vector2u> snake;
     Battlefield battlefield;
-    size_t width;
-    size_t height;
     unsigned int apples_count;
     Direction current_direction;
     bool game_over;
