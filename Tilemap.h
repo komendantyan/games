@@ -1,6 +1,7 @@
+#pragma once
+
 #include <SFML/Graphics.hpp>
 
-//#include <iostream>
 #include <vector>
 #include <map>
 
@@ -25,7 +26,6 @@ public:
     }
 
     sf::Sprite getSprite(Tile id) const {
-        //std::cerr << _rects.at(id) << std::endl;
         return sf::Sprite(texture, _rects.at(id));
     }
 
@@ -34,17 +34,6 @@ public:
 private:
     std::map<Tile, sf::IntRect> _rects;
 };
-
-
-//template <typename T>
-//std::ostream& operator<<(std::ostream& stream, const sf::Rect<T>& rect) {
-//    return stream <<
-//        '[' << rect.left <<
-//        ',' << rect.top <<
-//        ',' << rect.width <<
-//        ',' << rect.height <<
-//        ']';
-//}
 
 
 template <typename Tile>
@@ -64,7 +53,6 @@ public:
     {
         // pass
     }
-
 
     Tile& operator[](sf::Vector2u pos) {
         return _map[pos.y][pos.x];
@@ -92,4 +80,3 @@ private:
     Tileset<Tile> _tileset;
     std::vector<std::vector<Tile>> _map;
 };
-
