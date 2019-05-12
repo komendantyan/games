@@ -1,46 +1,14 @@
 #pragma once
 
+#include <SFML/System.hpp>
+
 #include <deque>
 #include <algorithm>
 #include <random>
-#include <map>
+
+#include "Messages.h"
 
 namespace SnakeGame {
-
-enum class Tile {
-    EMPTY,  // EMPTY,
-    APPLE,  // RED,
-    SNAKE,  // BLUE,
-    HEAD,  // GREEN,
-    FIELD,  // YELLOW,
-    NIGHT  // BLACK,
-};
-
-
-using Battlefield = std::vector<std::vector<Tile>>;
-
-
-struct State {  // TODO copy and reference
-    Battlefield battlefield;
-    bool game_over;
-    bool is_winner;
-};
-
-enum class Action {
-    TURN_RIGHT,
-    TURN_UP,
-    TURN_LEFT,
-    TURN_DOWN,
-    SWAP_HEAD
-};
-
-std::map<sf::Keyboard::Key, Action> KeyboardMappings = {
-    {sf::Keyboard::Right, Action::TURN_RIGHT},
-    {sf::Keyboard::Up, Action::TURN_UP},
-    {sf::Keyboard::Left, Action::TURN_LEFT},
-    {sf::Keyboard::Down, Action::TURN_DOWN},
-    {sf::Keyboard::Space, Action::SWAP_HEAD}
-};
 
 // TODO think about queue of action concept ?
 class Environment {
@@ -65,6 +33,8 @@ private:
     sf::Vector2u last_tail_pos;
 
 public:
+    //typedef Tile tile_type;  // TODO think about it
+
     Environment(size_t width, size_t height, unsigned int apples_count) :
         width(width),
         height(height),
