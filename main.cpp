@@ -33,7 +33,7 @@ int main() {
     sf::RenderWindow window(sf::VideoMode(640, 480), __FILE__);
 
     auto tileset = loadTileset();
-    Game<SnakeGame::Environment, SnakeGame::Action, SnakeGame::Tile> game(  // TODO template deduction
+    Game game(  // TODO template deduction
         window,
         SnakeGame::Environment(40, 30, 25),
         SnakeGame::keyboardMapping,
