@@ -5,6 +5,8 @@
 #include "Game.h"
 #include "SnakeGame/Environment.h"
 #include "SnakeGame/Messages.h"
+#include "TetrisGame/Environment.h"
+#include "TetrisGame/Messages.h"
 
 #include <iostream>
 
@@ -27,16 +29,29 @@ Tileset<SnakeGame::Tile> loadTileset() {
 }
 
 
+Tileset<TetrisGame::Tile> loadTetrisTileset() {
+    sf::Texture texture;
+    texture.loadFromFile("TetrisGame/tileset.png");
+
+    using T = TetrisGame::Tile;
+
+    return {
+        std::move(texture), 64,
+        {
+            {T::VACANT, T::OCCUPIED, T::CURRENT}
+        }
+    };
+}
 
 
 int main() {
-    sf::RenderWindow window(sf::VideoMode(640, 480), __FILE__);
+    sf::RenderWindow window(sf::VideoMode(480, 640), __FILE__);
 
-    auto tileset = loadTileset();
-    Game game(  // TODO template deduction
+    auto tileset = loadTetrisTileset();
+    Game game(
         window,
-        SnakeGame::Environment(40, 30, 25),
-        SnakeGame::keyboardMapping,
+        TetrisGame::Environment(30, 40),
+        TetrisGame::keyboardMapping,
         tileset
     );
 
