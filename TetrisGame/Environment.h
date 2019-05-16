@@ -28,6 +28,19 @@ private:
         DOWN,
     };
 
+    std::vector<std::vector<sf::Vector2u>> tetrominoList = {
+        {{1, 0}, {0, 0}, {0, 1}, {2, 0}},  // L
+        {{1, 0}, {0, 0}, {2, 1}, {2, 0}},  // L reflected
+        {{1, 0}, {1, 1}, {0, 1}, {2, 0}},  // Z
+        {{1, 0}, {0, 0}, {2, 1}, {1, 1}},  // S
+        {{1, 0}, {0, 0}, {1, 1}, {2, 0}},  // T
+        {{1, 0}, {0, 0}, {0, 1}, {1, 1}},  // O
+        {{1, 0}, {0, 0}, {2, 0}, {3, 0}}   // I
+    };
+
+    std::mt19937 mersene;
+    std::uniform_int_distribution<size_t> distrTetromino;
+
 public:
     Environment(size_t width, size_t height) :
         width(width),
@@ -35,12 +48,11 @@ public:
         battlefield(height, std::vector<Tile>(width, Tile::VACANT)),
 
         game_over(false),
-        is_winner(false)
+        is_winner(false),
+        mersene(std::random_device{}()),
+        distrTetromino(0, tetrominoList.size() - 1)
     {
         createTetromino();
-        //std::mt19937 mersenne(std::random_device{}());
-        //std::uniform_int_distribution<size_t> distr_width(0, width - 1),
-        //                                      distr_height(1, height - 1);
     }
 
     void act(Action action) {  // TODO mapping?
@@ -210,9 +222,10 @@ private:
         return lines;
     }
 
-    void createTetromino() {  // TODO randomize
-        current_tetromino = {{6, 0}, {5, 0}, {5, 1}, {7, 0}};
-        for (auto square : current_tetromino) {
+    void createTetromino() {
+        current_tetromino = tetrominoList[distrTetromino(mersene)];
+        for (auto& square : current_tetromino) {
+            square.x += (width - 3) / 2;
             battlefield[square.y][square.x] = Tile::CURRENT;
         }
     }
