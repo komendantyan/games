@@ -27,6 +27,7 @@ enum class Action {
     MOVE_LEFT,
     MOVE_RIGHT,
     MOVE_DOWN,
+    ROTATE,
     FAST_MOVE_DOWN
 };
 
@@ -35,6 +36,7 @@ std::map<sf::Keyboard::Key, Action> keyboardMapping = {
     {sf::Keyboard::Left, Action::MOVE_LEFT},
     {sf::Keyboard::Right, Action::MOVE_RIGHT},
     {sf::Keyboard::Down, Action::MOVE_DOWN},
+    {sf::Keyboard::Up, Action::ROTATE},
     {sf::Keyboard::Space, Action::FAST_MOVE_DOWN}
 };
 

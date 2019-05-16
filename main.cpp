@@ -52,7 +52,8 @@ int main() {
         window,
         TetrisGame::Environment(30, 40),
         TetrisGame::keyboardMapping,
-        tileset
+        tileset,
+        sf::milliseconds(200)
     );
 
     while (window.isOpen()) {
@@ -74,7 +75,7 @@ int main() {
         //    "Is winner: " << state.is_winner << '\t' <<
         //    "Game over: " << state.game_over << std::endl;
 
-        sf::sleep(sf::milliseconds(100));
+        sf::sleep(sf::milliseconds(10));
     }
 
     return 0;
